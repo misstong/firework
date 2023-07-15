@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FireWorks</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: -webkit-linear-gradient(0deg, rgb(0, 12, 91), rgb(0, 0, 0));
+            background: linear-gradient(0deg, rgb(0, 12, 91), rgb(0, 0, 0));
+        }
+    </style>
+</head>
+
+<body id="body">
+    <canvas id="canvas"></canvas>
+
+
+  
+    <script>
+
+const drawRadialGradation = (ctx, canvasRadius, canvasW, canvasH) => {
+	ctx.save();
+	const gradient = ctx.createRadialGradient(canvasRadius, canvasRadius, 0, canvasRadius, canvasRadius, canvasRadius);
+	gradient.addColorStop(0.0, 'rgba(255,255,255,1.0)');
+	gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+	gradient.addColorStop(1.0, 'rgba(255,255,255,0)');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, canvasW, canvasH);
+	ctx.restore();
+};
+const canvas = document.getElementById('canvas');
+	const ctx = canvas.getContext('2d');
+
+	const diameter = 128;
+	canvas.width = diameter;
+	canvas.height = diameter;
+	const canvasRadius = diameter / 2;
+
+	/* gradation circle
+    ------------------------ */
+	drawRadialGradation(ctx, canvasRadius, canvas.width, canvas.height);
+		</script>
+</body>
+
+</html>

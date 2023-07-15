@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FireWorks</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: -webkit-linear-gradient(0deg, rgb(0, 12, 91), rgb(0, 0, 0));
+            background: linear-gradient(0deg, rgb(0, 12, 91), rgb(0, 0, 0));
+        }
+        .text{
+            perspective: 400px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    /* color: red; */
+    /* color: rgb(34,193,195); */
+
+text-align: center;
+display: flex;
+justify-content: space-around;
+align-items: center;
+font-size: 80px;
+        }
+
+        .text div{
+            background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+    /* background: -webkit-linear-gradient(#eee, #333); */
+    -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+        }
+
+
+    </style>
+</head>
+
+<body id="body">
+    <div id="WebGL-output"></div>
+    <div class="text">
+        <div style="position: relative;display: inline-block;">
+            致
+        </div>
+        <div style="position: relative;display: inline-block;">
+            黄
+        </div>
+        <div style="position: relative;display: inline-block;">
+            鹤
+        </div>
+        <div style="position: relative;display: inline-block;">
+            晨
+        </div>
+    </div>
+
+    <script id="vs" type="x-shader/x-vertex">
+        precision mediump float;
+        attribute vec3 position;
+        uniform mat4 projectionMatrix;
+        uniform mat4 modelViewMatrix;
+        uniform float size;
+        attribute float adjustSize;
+        uniform vec3 cameraPosition;
+        varying float distanceCamera;
+        attribute vec3 velocity;
+        attribute vec4 color;
+        varying vec4 vColor;
+        void main() {
+            vColor = color;
+            vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_PointSize = size * adjustSize * (100.0 / length(modelViewPosition.xyz));
+            gl_Position = projectionMatrix * modelViewPosition;
+        }
+    </script>
+
+    <script id="fs1" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 vColor;
+        void main() {
+
+        
+            gl_FragColor = vColor;
+        }
+    </script>
+    <script id="fs" type="x-shader/x-fragment">
+        precision mediump float;
+        uniform sampler2D texture;
+        varying vec4 vColor;
+        void main() {
+
+            vec4 color = vec4(texture2D(texture, gl_PointCoord));
+            gl_FragColor = color * vColor;
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+				const text = document.querySelector('.text')
+				const names = text.getElementsByTagName('div')
+				const tl = gsap.timeline({
+					repeat: 1,
+					repeatDelay: 1,
+					yoyo: true
+
+				});
+				tl.set('.text', {
+					perspective: 400
+				})
+				tl.from(names, {
+					opacity: 0,
+					duration: 1.5,
+					x: gsap.utils.random(-300, 300, true),
+					y: gsap.utils.random(-100, 400,true),
+					y: gsap.utils.random(-100, 400,true),
+					stagger: {
+						amount: 3
+					}
+				})
+		</script>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.min.js"></script>
+  
+    <script src="https://unpkg.com/three@0.104.0/examples/js/controls/OrbitControls.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js" integrity="sha512-WoO4Ih0CDOSLYafy22wZD/mcJ7k0ESLqtQsFa6zFKnEUrbtuGU+GkLtVhgt93xa2qewG5gKEC6CWlN8OaCTSVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
